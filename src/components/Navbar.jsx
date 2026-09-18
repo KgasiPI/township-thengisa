@@ -1,48 +1,33 @@
 import { Link } from "react-router-dom";
-import { useAuth } from "../context/AuthContext";
 
 export default function Navbar() {
-  const { user, logout } = useAuth();
-
   return (
-    <nav className="navbar">
-      <div className="navbar-container">
-        <Link to="/" className="navbar-brand">
+    <nav className="sticky top-0 z-50 bg-white shadow-xs py-4">
+      <div className="max-w-[1200px] mx-auto px-4 sm:px-6 lg:px-8 flex flex-wrap items-center justify-between gap-4">
+        
+        {/* Brand */}
+        <Link to="/" className="text-2xl font-bold text-neutral-900 tracking-tight">
           Township Thengisa
         </Link>
-        <div className="navbar-links">
-          <Link to="/" className="navbar-link">
-            Home
+
+        {/* Links */}
+        <div className="flex items-center gap-6 font-medium text-neutral-700">
+          <Link to="/" className="hover:text-blue-600 transition-colors">Home</Link>
+          <Link to="/cart" className="hover:text-blue-600 transition-colors">Cart</Link>
+          <Link to="/orders" className="hover:text-blue-600 transition-colors">My Orders</Link>
+          <Link to="/account" className="hover:text-blue-600 transition-colors">My Account</Link>
+        </div>
+
+        {/* Auth Action Buttons */}
+        <div className="flex items-center gap-2">
+          <Link to="/login" className="px-5 py-2.5 text-sm font-semibold text-white bg-neutral-600 hover:bg-neutral-700 rounded-lg transition-colors inline-block text-center">
+            Login
           </Link>
-          <Link to="/checkout" className="navbar-link">
-            Cart
-          </Link>
-          <Link to="/orders" className="navbar-link">
-            My Orders
-          </Link>
-          <Link to="/account" className="navbar-link">
-            My Account
+          <Link to="/signup" className="px-5 py-2.5 text-sm font-semibold text-white bg-blue-600 hover:bg-blue-700 rounded-lg transition-colors inline-block text-center">
+            Signup
           </Link>
         </div>
-        <div className="navbar-auth">
-          {!user ? (
-            <div className="navbar-auth-links">
-              <Link to="/auth?mode=login" className="btn btn-secondary">
-                Login
-              </Link>
-              <Link to="/auth?mode=signup" className="btn btn-primary">
-                Signup
-              </Link>
-            </div>
-          ) : (
-            <div className="navbar-user">
-              <span className="navbar-greeting">Hello, {user.email}</span>
-              <button className="btn btn-secondary" onClick={logout}>
-                Logout
-              </button>
-            </div>
-          )}
-        </div>
+
       </div>
     </nav>
   );

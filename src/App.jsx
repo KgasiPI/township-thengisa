@@ -11,7 +11,8 @@ import Footer from "./components/Footer";
 import AuthProvider from "./context/AuthContext";
 import CartProvider from "./context/CartContext";
 
-import "./App.css";
+//import "./App.css";
+import "./index.css";
 
 export default function App() {
   return (

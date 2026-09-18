@@ -28,50 +28,59 @@ export default function Home() {
         );
 
   return (
-    <div className="page">
+    <div className="min-h-screen py-4 pb-8 flex flex-col">
       {/* Hero Welcome Section */}
-      <div className="home-hero">
-        <h1 className="home-title">Welcome to Township Thengisa</h1>
-        <p className="home-subtitle">
+      <div className="text-center py-6 px-8 max-w-[800px] mx-auto">
+        <h1 className="text-4xl font-extrabold text-neutral-900 tracking-tight mb-2">
+          Welcome to Township Thengisa
+        </h1>
+        <p className="text-lg text-neutral-500">
           Discover amazing local products at great prices
         </p>
       </div>
 
       {/* Floating Special Offers Banner */}
-      <div className="container">
+      <div className="max-w-[1200px] w-full mx-auto px-4 sm:px-6 lg:px-8">
         <FeaturedBanner products={products} />
       </div>
 
       {/* Main Layout: Left Sidebar + Right Product Catalog */}
-      <div className="container home-layout">
+      <div className="max-w-[1200px] w-full mx-auto px-4 sm:px-6 lg:px-8 flex flex-col md:flex-row gap-8 mt-6 items-start">
         {/* Left Sidebar Category Filter */}
-        <aside className="category-sidebar">
-          <h3 className="sidebar-title">Categories</h3>
-          
+        <aside className="w-full md:w-64 shrink-0 bg-white rounded-xl p-5 border border-neutral-200 shadow-xs">
+          <h3 className="text-lg font-bold text-neutral-900 border-b border-neutral-100 pb-3 mb-4">
+            Categories
+          </h3>
+
           {/* Category List for Desktop */}
-          <ul className="category-list">
-            {CATEGORIES.map((category) => (
-              <li key={category}>
-                <button
-                  className={`category-btn ${
-                    selectedCategory === category ? "active" : ""
-                  }`}
-                  onClick={() => setSelectedCategory(category)}
-                >
-                  {category}
-                </button>
-              </li>
-            ))}
+          <ul className="hidden md:flex flex-col gap-1.5 list-none p-0 m-0">
+            {CATEGORIES.map((category) => {
+              const isActive = selectedCategory === category;
+              return (
+                <li key={category}>
+                  <button
+                    className={`w-full text-left px-3.5 py-2.5 rounded-lg text-sm font-medium transition-all cursor-pointer ${
+                      isActive
+                        ? "bg-blue-600 text-white font-semibold shadow-xs"
+                        : "text-neutral-700 hover:bg-neutral-100 hover:text-neutral-900"
+                    }`}
+                    onClick={() => setSelectedCategory(category)}
+                  >
+                    {category}
+                  </button>
+                </li>
+              );
+            })}
           </ul>
 
           {/* Dropdown Selector for Mobile */}
-          <div className="category-dropdown-container">
-            <label htmlFor="category-select" className="dropdown-label">
+          <div className="flex md:hidden flex-col gap-1.5">
+            <label htmlFor="category-select" className="text-xs font-semibold text-neutral-500 uppercase tracking-wider">
               Select Category:
             </label>
             <select
               id="category-select"
-              className="category-dropdown"
+              className="w-full p-2.5 rounded-lg border border-neutral-300 text-sm bg-white text-neutral-800 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
               value={selectedCategory}
               onChange={(e) => setSelectedCategory(e.target.value)}
             >
@@ -85,15 +94,17 @@ export default function Home() {
         </aside>
 
         {/* Right Product Grid */}
-        <main className="catalog-content">
-          <h2 className="page-title">{selectedCategory}</h2>
+        <main className="flex-1 w-full">
+          <h2 className="text-3xl font-extrabold text-neutral-900 mb-6 tracking-tight">
+            {selectedCategory}
+          </h2>
 
           {filteredProducts.length === 0 ? (
-            <p className="no-products">
+            <p className="text-center py-12 text-neutral-500 text-lg bg-neutral-50 rounded-xl border border-dashed border-neutral-200">
               No products found in this category.
             </p>
           ) : (
-            <div className="product-grid">
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
               {filteredProducts.map((product) => (
                 <ProductCard product={product} key={product.id} />
               ))}

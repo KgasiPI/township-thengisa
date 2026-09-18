@@ -1,26 +1,35 @@
-import { useState } from 'react'
-import './App.css'
-import { Route, Routes } from 'react-router-dom'
-import Home from './pages/Home.jsx'
-import Auth from './pages/Auth.jsx'
-import Checkout from './pages/Checkout.jsx' 
-import Navbar from './components/Navbar.jsx'
+import { Routes, Route } from "react-router-dom";
+import Home from "./pages/Home";
+import Auth from "./pages/Auth";
+import Checkout from "./pages/Checkout";
+import ProductDetails from "./pages/ProductDetails";
+import MyOrders from "./pages/MyOrders";
+import MyAccount from "./pages/MyAccount";
+import Navbar from "./components/Navbar";
+import Footer from "./components/Footer";
 
-function App() {
-  const [count, setCount] = useState(0)
+import AuthProvider from "./context/AuthContext";
+import CartProvider from "./context/CartContext";
 
+import "./App.css";
+
+export default function App() {
   return (
-    <>
-      <div className="app">
-        <Navbar />
-        <Routes>
-          <Route path="/" element={<Home />} />
-          <Route path="/auth" element={<Auth />} />
-          <Route path="/checkout" element={<Checkout />} />
-        </Routes>
-      </div>
-    </>
-  )
+    <AuthProvider>
+      <CartProvider>
+        <div className="app">
+          <Navbar />
+          <Routes>
+            <Route path="/" element={<Home />} />
+            <Route path="/auth" element={<Auth />} />
+            <Route path="/checkout" element={<Checkout />} />
+            <Route path="/products/:id" element={<ProductDetails />} />
+            <Route path="/orders" element={<MyOrders />} />
+            <Route path="/account" element={<MyAccount />} />
+          </Routes>
+          <Footer />
+        </div>
+      </CartProvider>
+    </AuthProvider>
+  );
 }
-
-export default App

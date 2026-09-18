@@ -89,7 +89,7 @@ body {
 
 .page {
   flex: 1;
-  padding: 1rem 0 2rem 0; /* Adjusted top padding to reduce gap under Navbar */
+  padding: 2rem 0;
 }
 
 .container {
@@ -104,32 +104,24 @@ body {
   color: #333;
 }
 
-/* ==========================================================================
-   Welcome Section Spacing Adjustments
-   ========================================================================== */
-
 .home-hero {
   text-align: center;
-  padding: 1.5rem 2rem 1rem 2rem; /* Reduced vertical padding */
+  padding: 4rem 2rem;
   max-width: 800px;
   margin: 0 auto;
 }
 
 .home-title {
-  font-size: 2.5rem; /* Slightly balanced font scale */
-  margin-bottom: 0.5rem; /* Tightened gap above subtitle */
+  font-size: 3rem;
+  margin-bottom: 1rem;
   color: #333;
 }
 
 .home-subtitle {
-  font-size: 1.15rem;
+  font-size: 1.25rem;
   color: #666;
-  margin-bottom: 0.5rem; /* Tightened gap above Special Offer Banner */
+  margin-bottom: 2rem;
 }
-
-/* ==========================================================================
-   Product Grid & Catalog Layout
-   ========================================================================== */
 
 .product-grid {
   display: grid;
@@ -669,7 +661,7 @@ body {
 }
 
 /* ==========================================================================
-   Floating Specials/Featured Banner Styles
+   Floating Specials/Featured Banner Styles (ONLY targets <FeaturedBanner />)
    ========================================================================== */
 
 .featured-banner-container {
@@ -679,7 +671,7 @@ body {
   background: linear-gradient(135deg, #f8fafc 0%, #e2e8f0 100%);
   border: 1px solid #e2e8f0;
   border-radius: 12px;
-  margin: 0 auto 1.5rem auto; /* Reduced bottom margin */
+  margin: 0 auto 2.5rem auto;
   display: flex;
   align-items: center;
   overflow: hidden;
@@ -737,12 +729,11 @@ body {
   color: #007bff;
   margin-bottom: 1.25rem;
 }
-
 /* Layout Structure */
 .home-layout {
   display: flex;
   gap: 30px;
-  margin-top: 16px; /* Tightened top margin under special offer banner */
+  margin-top: 24px;
   align-items: flex-start;
 }
 
@@ -843,13 +834,8 @@ body {
     gap: 6px;
   }
 }
-
-/* ==========================================================================
-   Banner Wrapper Specific Spacing Adjustments
-   ========================================================================== */
-
 .featured-banner-wrapper {
-  margin: 0.5rem 0 1.5rem 0; /* Reduced top & bottom spacing */
+  margin: 20px 0;
   display: flex;
   flex-direction: column;
   align-items: center;

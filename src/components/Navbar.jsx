@@ -20,11 +20,19 @@ export default function Navbar() {
 
         {/* Auth Action Buttons */}
         <div className="flex items-center gap-2">
-          <Link to="/login" className="px-5 py-2.5 text-sm font-semibold text-white bg-neutral-600 hover:bg-neutral-700 rounded-lg transition-colors inline-block text-center">
+          <Link
+            to="/auth"
+            state={{ isLogin: true }}
+            className="px-5 py-2.5 text-sm font-semibold text-white bg-neutral-600 hover:bg-neutral-700 rounded-lg transition-colors inline-block text-center"
+          >
             Login
           </Link>
-          <Link to="/signup" className="px-5 py-2.5 text-sm font-semibold text-white bg-blue-600 hover:bg-blue-700 rounded-lg transition-colors inline-block text-center">
-            Signup
+          <Link
+            to="/auth"
+            state={{ isLogin: false }}
+            className="px-5 py-2.5 text-sm font-semibold text-white bg-blue-600 hover:bg-blue-700 rounded-lg transition-colors inline-block text-center"
+          >
+            Register
           </Link>
         </div>
 

@@ -2,8 +2,7 @@ import { useAuth } from "../context/AuthContext";
 import { Link } from "react-router-dom";
 
 export default function MyOrders() {
-  const auth = useAuth() || {};
-  const user = auth.user;
+  const { user } = useAuth();
 
   // Helper function to format prices directly to ZAR
   const formatZAR = (amount) => {
@@ -13,7 +12,7 @@ export default function MyOrders() {
     }).format(amount || 0);
   };
 
-  // Sample order history data
+  // Sample order history data (Replace or connect to your database/backend API)
   const orders = [
     {
       id: "ORD-2026-8812",
@@ -56,6 +55,32 @@ export default function MyOrders() {
     },
   ];
 
+  // 1. Unauthenticated View Guard
+  if (!user) {
+    return (
+      <div className="flex-1 py-16 flex items-center justify-center bg-neutral-100 min-h-[60vh]">
+        <div className="max-w-md w-full mx-4 bg-white p-8 rounded-xl shadow-xs border border-neutral-200 text-center">
+          <div className="w-12 h-12 bg-blue-50 text-blue-600 rounded-full flex items-center justify-center mx-auto mb-4 text-xl font-bold">
+            🔒
+          </div>
+          <h2 className="text-2xl font-bold text-neutral-900 mb-2">
+            Access Restricted
+          </h2>
+          <p className="text-neutral-600 mb-6 text-sm">
+            Please sign in to view your order history and track shipments.
+          </p>
+          <Link
+            to="/login"
+            className="block w-full py-3 px-4 bg-blue-600 hover:bg-blue-700 text-white font-semibold text-sm rounded-lg transition-colors shadow-xs"
+          >
+            Sign In to Account
+          </Link>
+        </div>
+      </div>
+    );
+  }
+
+  // 2. Authenticated View
   return (
     <div className="flex-1 py-8 bg-neutral-100 min-h-[75vh]">
       <div className="max-w-[1200px] mx-auto px-4 sm:px-6 lg:px-8">
@@ -79,7 +104,7 @@ export default function MyOrders() {
         </div>
 
         {/* Empty State Guard */}
-        {!orders || orders.length === 0 ? (
+        {orders.length === 0 ? (
           <div className="bg-white p-12 rounded-xl shadow-xs border border-neutral-200 text-center py-16">
             <div className="w-16 h-16 bg-neutral-100 text-neutral-400 rounded-full flex items-center justify-center mx-auto mb-4 text-2xl">
               📦
@@ -150,7 +175,7 @@ export default function MyOrders() {
 
                 {/* Itemized Contents */}
                 <div className="p-4 sm:p-6 divide-y divide-neutral-100">
-                  {order.items?.map((item) => (
+                  {order.items.map((item) => (
                     <div
                       key={item.id}
                       className="py-4 first:pt-0 last:pb-0 flex items-center justify-between gap-4"
@@ -185,17 +210,17 @@ export default function MyOrders() {
 
                 {/* Order Footer Actions */}
                 <div className="bg-neutral-50/50 px-4 py-3 sm:px-6 border-t border-neutral-100 flex flex-wrap items-center justify-between gap-2 text-xs text-neutral-500">
-                  <span>
-                    Ship to: <strong className="text-neutral-700">{order.shippingAddress}</strong>
-                  </span>
+                  <span>Ship to: <strong className="text-neutral-700">{order.shippingAddress}</strong></span>
                   <button className="text-blue-600 hover:text-blue-700 font-semibold cursor-pointer">
                     View Invoice &rarr;
                   </button>
                 </div>
+
               </div>
             ))}
           </div>
         )}
+
       </div>
     </div>
   );

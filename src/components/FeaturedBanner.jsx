@@ -1,88 +1,144 @@
 import { useState, useEffect } from "react";
+import { Link, useNavigate } from "react-router-dom";
 
 export default function FeaturedBanner({ products = [] }) {
+  const navigate = useNavigate();
+  const DEFAULT_IMAGE = "https://placehold.co/300x300/1e293b/ffffff?text=Special";
+
+  const DEFAULT_SPECIALS = [
+    {
+      id: "1",
+      name: "10KG Maize Meal",
+      tagline: "Township Saver",
+      price: 99.99,
+      oldPrice: 129.99,
+      image: "/images/maize.jpg",
+      badge: "SAVE R30",
+    },
+    {
+      id: "2",
+      name: "2L Cooking Oil",
+      tagline: "Household Deal",
+      price: 59.99,
+      oldPrice: 79.99,
+      image: "/images/oil.jpg",
+      badge: "SAVE R20",
+    },
+    {
+      id: "3",
+      name: "Washing Powder 4KG",
+      tagline: "Clean Savings",
+      price: 119.99,
+      oldPrice: 149.99,
+      image: "/images/powder.jpg",
+      badge: "20% OFF",
+    },
+  ];
+
+  const displayProducts =
+    Array.isArray(products) && products.length >= 3
+      ? products.slice(0, 3)
+      : DEFAULT_SPECIALS;
+
   const [currentIndex, setCurrentIndex] = useState(0);
 
-  // Fallback placeholder image service if product image path is missing
-  const DEFAULT_IMAGE = "https://placehold.co/400x400/1e293b/ffffff?text=Featured+Product";
-
-  // Filter products that have specials/discounts or grab top items
-  const featuredItems = products.length > 0 ? products.slice(0, 4) : [];
-  const currentProduct = featuredItems[currentIndex];
-
-  // Auto-rotate banner items every 5 seconds
   useEffect(() => {
-    if (featuredItems.length === 0) return;
-    const interval = setInterval(() => {
-      setCurrentIndex((prev) => (prev + 1) % featuredItems.length);
+    if (displayProducts.length === 0) return;
+    const timer = setInterval(() => {
+      setCurrentIndex((prev) => (prev + 1) % displayProducts.length);
     }, 5000);
-    return () => clearInterval(interval);
-  }, [featuredItems.length]);
+    return () => clearInterval(timer);
+  }, [displayProducts.length]);
+
+  const currentProduct = displayProducts[currentIndex];
 
   if (!currentProduct) return null;
 
-  return (
-    <div className="my-6 flex flex-col items-center">
-      <div className="relative w-full bg-gradient-to-br from-slate-900 to-slate-800 text-white rounded-xl p-4 sm:p-6 cursor-pointer shadow-lg hover:shadow-xl transition-all duration-250 overflow-hidden border border-slate-700/50">
-        
-        {/* Special Offer Badge */}
-        <span className="absolute top-3 right-4 bg-red-500 text-white text-xs font-bold px-2.5 py-1 rounded-full uppercase tracking-wider shadow-sm z-10">
-          Special Offer
-        </span>
+  // Uses the exact same ID resolution as product cards
+  const productId = currentProduct.id || currentProduct._id || currentIndex + 1;
 
-        {/* Content Body */}
-        <div className="flex items-center gap-5 sm:gap-8">
-          {/* Dynamic Image Binding with Safe Fallback */}
+  // Handler if you prefer programmatic navigation (matching View button onClick)
+  const handleProductClick = () => {
+    navigate(`/products/${productId}`);
+  };
+
+  return (
+    <div className="w-full max-w-[1200px] mx-auto px-4 my-4">
+      <div 
+        onClick={handleProductClick}
+        className="relative overflow-hidden rounded-xl bg-slate-900 text-white px-5 py-4 shadow-md h-36 sm:h-40 flex items-center justify-between border border-slate-800 cursor-pointer group"
+      >
+        {/* Left Details */}
+        <div className="max-w-md space-y-1.5 z-10">
+          <div className="flex items-center gap-2">
+            <span className="bg-red-600 text-white text-[10px] font-black px-2 py-0.5 rounded uppercase tracking-wider">
+              {currentProduct.badge || "SPECIAL"}
+            </span>
+            <span className="text-[11px] text-slate-400 font-medium tracking-wide uppercase">
+              {currentProduct.tagline || "Limited Special"}
+            </span>
+          </div>
+
+          <h3 className="text-base sm:text-xl font-bold tracking-tight truncate text-white group-hover:text-blue-400 transition-colors">
+            {currentProduct.name}
+          </h3>
+
+          <div className="flex items-baseline gap-2.5">
+            <span className="text-lg sm:text-2xl font-black text-emerald-400">
+              R{Number(currentProduct.price).toFixed(2)}
+            </span>
+            {currentProduct.oldPrice && (
+              <span className="text-xs sm:text-sm text-slate-400 line-through">
+                R{Number(currentProduct.oldPrice).toFixed(2)}
+              </span>
+            )}
+          </div>
+
+          {/* Action Button - navigates to Product Details */}
+          <button
+            onClick={(e) => {
+              e.stopPropagation();
+              handleProductClick();
+            }}
+            className="mt-1 px-3.5 py-1.5 bg-blue-600 hover:bg-blue-500 text-white font-semibold text-xs rounded-lg transition-colors cursor-pointer"
+          >
+            Shop Special &rarr;
+          </button>
+        </div>
+
+        {/* Right Product Image */}
+        <div className="relative flex items-center justify-center w-28 h-28 sm:w-32 sm:h-32 shrink-0 z-10">
+          <div className="absolute inset-0 rounded-full bg-slate-800/80 blur-md -z-10 group-hover:bg-slate-700/80 transition-colors" />
+
           <img
             src={currentProduct.image || DEFAULT_IMAGE}
-            alt={currentProduct.name || "Featured Product"}
-            className="w-24 h-24 sm:w-32 sm:h-32 object-cover rounded-lg shrink-0 bg-slate-800 border border-slate-700"
+            alt={currentProduct.name}
+            className="max-h-full max-w-full object-contain transition-transform duration-300 group-hover:scale-105"
             onError={(e) => {
-              // Gracefully handle broken relative image paths
               e.currentTarget.src = DEFAULT_IMAGE;
             }}
           />
-
-          <div className="flex-1 min-w-0">
-            <h3 className="text-xl sm:text-2xl font-bold text-white mb-1 truncate">
-              {currentProduct.name}
-            </h3>
-            
-            <div className="flex items-center gap-3 mb-3 font-semibold">
-              {currentProduct.oldPrice && (
-                <span className="line-through text-slate-400 text-sm sm:text-base">
-                  R{currentProduct.oldPrice}
-                </span>
-              )}
-              <span className="text-emerald-400 text-lg sm:text-xl">
-                R{currentProduct.price}
-              </span>
-            </div>
-
-            <button className="text-sm font-medium text-blue-400 hover:text-blue-300 transition-colors flex items-center gap-1 cursor-pointer">
-              Shop Now &rarr;
-            </button>
-          </div>
         </div>
-      </div>
 
-      {/* Interactive Pagination Dots */}
-      {featuredItems.length > 1 && (
-        <div className="flex items-center gap-2 mt-3">
-          {featuredItems.map((_, index) => (
+        {/* Carousel Indicators (Stop propagation so clicking a dot changes slide without navigating) */}
+        <div className="absolute bottom-2 left-5 flex items-center gap-1.5 z-20">
+          {displayProducts.map((_, index) => (
             <button
               key={index}
-              onClick={() => setCurrentIndex(index)}
-              className={`h-2 rounded-full transition-all duration-300 cursor-pointer border-none ${
-                currentIndex === index
-                  ? "w-5 bg-emerald-500"
-                  : "w-2 bg-neutral-300 hover:bg-neutral-400"
-              }`}
+              onClick={(e) => {
+                e.stopPropagation();
+                setCurrentIndex(index);
+              }}
               aria-label={`Go to slide ${index + 1}`}
+              className={`h-1.5 rounded-full transition-all cursor-pointer ${
+                currentIndex === index
+                  ? "w-4 bg-emerald-400"
+                  : "w-1.5 bg-slate-600 hover:bg-slate-500"
+              }`}
             />
           ))}
         </div>
-      )}
+      </div>
     </div>
   );
 }

@@ -10,7 +10,6 @@ export default function Auth() {
   const [formData, setFormData] = useState({
     name: "",
     email: "",
-    phone: "",
     password: "",
   });
   const [error, setError] = useState("");
@@ -38,32 +37,25 @@ export default function Auth() {
       return;
     }
 
-    if (!isLogin) {
-      if (!formData.name) {
-        setError("Please enter your full name.");
-        return;
-      }
-      if (!formData.phone) {
-        setError("Please enter your phone number.");
-        return;
-      }
+    if (!isLogin && !formData.name) {
+      setError("Please enter your full name.");
+      return;
     }
 
     login({
       email: formData.email,
       name: isLogin ? formData.email.split("@")[0] : formData.name,
-      phone: isLogin ? "" : formData.phone,
     });
     navigate("/");
   };
 
   const handleGoogleAuth = () => {
-    login({ name: "Google User", email: "user@gmail.com", phone: "082 000 0000" });
+    login({ name: "Google User", email: "user@gmail.com" });
     navigate("/");
   };
 
   const handleFacebookAuth = () => {
-    login({ name: "Facebook User", email: "user@facebook.com", phone: "082 000 0000" });
+    login({ name: "Facebook User", email: "user@facebook.com" });
     navigate("/");
   };
 
@@ -161,22 +153,6 @@ export default function Auth() {
               className="w-full px-3 py-2 bg-white border border-neutral-300 rounded-lg text-sm text-neutral-800 focus:outline-hidden focus:ring-2 focus:ring-blue-500/20 focus:border-blue-600 transition-all"
             />
           </div>
-
-          {!isLogin && (
-            <div>
-              <label className="block text-xs font-semibold text-neutral-700 uppercase tracking-wider mb-1">
-                Phone Number
-              </label>
-              <input
-                type="tel"
-                name="phone"
-                value={formData.phone}
-                onChange={handleChange}
-                placeholder="082 123 4567"
-                className="w-full px-3 py-2 bg-white border border-neutral-300 rounded-lg text-sm text-neutral-800 focus:outline-hidden focus:ring-2 focus:ring-blue-500/20 focus:border-blue-600 transition-all"
-              />
-            </div>
-          )}
 
           <div>
             <label className="block text-xs font-semibold text-neutral-700 uppercase tracking-wider mb-1">
